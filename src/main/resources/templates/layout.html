@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:fragment="head">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}" />
+    <!-- sbb CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+    <title>Hello, sbb!</title>
+    <!-- Bootstrap js (defer 하면 제일 마지막에 가져와줌 원래 js는 마지막에 가져오는거임) -->
+    <script defer th:src="@{/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<!-- 네비게이션 메뉴 -->
+<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">SBB</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- 왼쪽 메 -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+                </li>
+            </ul>
+
+            <!-- 오른쪽 메뉴 -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    안녕하세요👋 <span sec:authentication="name"></span> <span sec:authentication="principal.authorities"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 모든 에러메세지 표시  -->
+<div th:fragment="formErrors" class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+    <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+</div>
+</body>
+</html>
